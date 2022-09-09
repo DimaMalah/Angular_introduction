@@ -1,0 +1,12 @@
+<div class="flex flex-col">
+  <input name="car" type="text" class="mb-4 border bg-yellow-100" placeholder="car" [(ngModel)]="carName">
+  <input name="year" type="text" class="mb-4 border bg-yellow-100" placeholder="year" [(ngModel)]="carYear">
+</div>
+  <button
+    type="button"
+    class="border bg-blue-600 text-white pl-2 pr-2 mb-3 rounded"
+    (click)="addCar()"
+  >
+    add car
+  </button>
+<hr>
