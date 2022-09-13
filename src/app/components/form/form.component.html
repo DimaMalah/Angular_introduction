@@ -1,0 +1,23 @@
+<form class="flex flex-col w-[300px]">
+  <label>email</label>
+  <input class="border rounded pl-1 mb-4 mt-1" type="email" placeholder="enter email">
+
+  <label>password</label>
+  <input class="border rounded pl-1 mb-4 mt-1" type="password" placeholder="enter password">
+
+  <label>country</label>
+  <select class="border rounded pl-1 mb-4 mt-1" type="select" >
+    <option value="Ukraine">Ukraine</option>
+    <option value="United Kingdom">United Kingdom</option>
+    <option value="USA">USA</option>
+  </select>
+  <div  *ngFor="let ans of answers">
+    <label>
+      <input  type="radio" [value]="ans.type"> {{ans.text}}
+    </label>
+  </div>
+  <button
+    class="pl-4 pr-4 border rounded bg-green-600 text-white mt-4"
+    type="submit">send
+  </button>
+</form>
