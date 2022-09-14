@@ -1,23 +1,36 @@
-<form class="flex flex-col max-w-[300px] m-[auto]">
-  <label>email</label>
-  <input class="border rounded pl-1 mb-4 mt-1" type="email" placeholder="enter email">
+<div class="main-wrapper">
+  <div class="file-container">
 
-  <label>password</label>
-  <input class="border rounded pl-1 mb-4 mt-1" type="password" placeholder="enter password">
+    <div  class="overflow-hidden" [ngSwitch]="animation">
+			<img *ngSwitchCase="'rotate'" [@rotate] = "animationState" [src]="url" width="400px">
+      <img *ngSwitchCase="'flyUp'" [@fallDown] = "animationState" [src]="url" width="400px">
+      <img *ngSwitchCase="'fallDown'" [@flyUp] = "animationState" [src]="url" width="400px">
+      <img *ngSwitchDefault [src]="url" width="400px">
+    </div>
 
-  <label>country</label>
-  <select class="border rounded pl-1 mb-4 mt-1" type="select" >
-    <option value="Ukraine">Ukraine</option>
-    <option value="United Kingdom">United Kingdom</option>
-    <option value="USA">USA</option>
-  </select>
-  <div  *ngFor="let ans of answers">
-    <label>
-      <input  type="radio" [value]="ans.type"> {{ans.text}}
-    </label>
+    <input id="file" type="file" (change)="getFile($event)" class="file-container__file">
+
   </div>
-  <button
-    class="pl-4 pr-4 border rounded bg-green-600 text-white mt-4  w-[100px]"
-    type="submit">send
+  <button (click)="resetImg()" type="button"  class="border rounded bg-blue-200 pl-4 pr-4 mt-6">
+      clear image
   </button>
-</form>
+  <label for="file" class="border rounded bg-blue-200 pl-4 pr-4 mt-6 file-container__file-label">
+      upload image
+  </label>
+
+  <label for="anim" class="mt-6">choose an animation</label>
+  <select
+    [disabled]="url==='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0mx3OYcD9Ge89SC942Y8dxDJrYwmfdjaqA&usqp=CAU'"
+    name="anim"
+    ngModel (ngModelChange)="animationType($event)"
+    name="animation"
+    class="border rounded pl-1 mb-4 mt-1"
+    type="select"
+  >
+    <option value="rotate" >rotate</option>
+    <option value="fallDown">fall down</option>
+    <option value="flyUp">fly up</option>
+  </select>
+</div>
+
+
