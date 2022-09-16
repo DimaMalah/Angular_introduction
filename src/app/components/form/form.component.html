@@ -1,28 +1,46 @@
-<div class="main-wrapper">
-  <div class="file-container">
+<div class="main-wrapper" >
+  <div class="file-container overflow-hidden relative" [style.height]="initialImageHeight+'px'" >
 
-    <div  #img class="overflow-hidden" [ngSwitch]="animation">
-			<img  *ngSwitchCase="'rotate'" [@rotate] = "animationState" [src]="url" width="400px">
-      <img #img *ngSwitchCase="'flyUp'" [@fallDown] = "animationState" [src]="url" width="400px">
-      <img #img *ngSwitchCase="'fallDown'" [@flyUp] = "animationState" [src]="url" width="400px">
-      <img #img *ngSwitchDefault [src]="url" width="400px">
+    <div
+      #img
+      class = "max-w-[400px] border relative  overflow-hidden "
+      [ngSwitch]="animation"
+      [style.width]="xRangeValue +'%'"
+      [style.height]="yRangeValue +'%'"
+      [style.margin]="'0 auto'"
+    >
+      <div   class="overflow-x overflow-y relative border">
+        <div #imgDiv class=" overflow-hidden min-w-[600px]">
+          <img  *ngSwitchCase="'rotate'" [@rotate] = "animationState" [src]="url" width="400px">
+          <img  *ngSwitchCase="'flyUp'" [@fallDown] = "animationState" [src]="url" width="400px">
+          <img  *ngSwitchCase="'fallDown'" [@flyUp] = "animationState" [src]="url" width="400px">
+          <img  *ngSwitchDefault [src]="url" width="400px">
+        </div>
+      </div>
+
     </div>
 
-    <input id="file" type="file" (change)="getFile($event)" class="file-container__file">
+    <input  id="file" type="file" (change)="getFile($event, imgDiv)" class="file-container__file">
 
   </div>
-  <button (click)="resetImg()" type="button"  class="border rounded bg-blue-200 pl-4 pr-4 mt-6">
+
+
+  <button  (click)="resetImg(imgDiv)" type="button"  class="border rounded bg-blue-200 pl-4 pr-4 mt-6">
       clear image
   </button>
-  <label for="file" class="border rounded bg-blue-200 pl-4 pr-4 mt-6 file-container__file-label">
+
+
+  <label  for="file" class="border rounded bg-blue-200 pl-4 pr-4 mt-6 file-container__file-label">
       upload image
   </label>
+
 
   <label for="anim" class="mt-6">choose an animation</label>
   <select
     [disabled]="url==='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0mx3OYcD9Ge89SC942Y8dxDJrYwmfdjaqA&usqp=CAU'"
     name="anim"
-    ngModel (ngModelChange)="animationType($event)"
+    ngModel
+    (ngModelChange)="animationType($event)"
     name="animation"
     class="border rounded pl-1 mb-4 mt-1"
     type="select"
@@ -31,6 +49,7 @@
     <option value="fallDown">fall down</option>
     <option value="flyUp">fly up</option>
   </select>
+
 
   <div
     *ngIf="url!=='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0mx3OYcD9Ge89SC942Y8dxDJrYwmfdjaqA&usqp=CAU'"
@@ -42,19 +61,52 @@
       name="x"
       placeholder="0"
       class="border mr-4 ml-4 w-[50px] bg-blue-100"
-      #x
-      (change)="shiftX(x,img)"
+      (change)="shiftX(imgDiv)"
+      [(ngModel)]="xShift"
     >
+
     <label for="y">Y-shift :</label>
     <input
       type="number"
       name="y"
       placeholder="0"
       class="border mr-4 ml-4 w-[50px] bg-blue-100"
-      #y
-      (change)="shiftY(y,img)"
+      (change)="shiftY(imgDiv)"
+      [(ngModel)]="yShift"
     >
   </div>
+
+  <div
+    class="mt-[30px]"
+    *ngIf="url!=='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0mx3OYcD9Ge89SC942Y8dxDJrYwmfdjaqA&usqp=CAU'"
+  >
+    <output id="xrangevalue" [value]="xRangeValue">100</output>
+    <input
+      #xRange
+      type="range"
+      class="mr-4"
+      min="0"
+      max="100"
+      value="100"
+      [ngModel]="xRangeValue"
+      (change)="onXRangeChange(xRange)"
+      oninput="xrangevalue.value=value"
+    >
+
+
+    <output id="yrangevalue" [value]="yRangeValue"></output>
+    <input
+      #yRange
+      type="range"
+      min="0"
+      max="100"
+      value="100"
+      [ngModel]="yRangeValue"
+      (change)="onYRangeChange(yRange)"
+      oninput="yrangevalue.value=value"
+    >
+  </div>
+
 </div>
 
 

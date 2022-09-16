@@ -6,10 +6,8 @@
 }
 
 .file-container{
-  border: 1px dotted black;
   display: inline-block;
   width: fit-content;
-
   &__file{
     display: none;
     &-label{

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { rotateAnimation, downAnimation, upAnimation } from '../../animations/my-animations'
 
 
@@ -11,16 +10,24 @@ import { rotateAnimation, downAnimation, upAnimation } from '../../animations/my
 })
 export class FormComponent implements OnInit {
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
-  url:string = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0mx3OYcD9Ge89SC942Y8dxDJrYwmfdjaqA&usqp=CAU'
-  animation = ""
-  animationState = ""
-  xShift = ""
-  yShift = ""
+  url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0mx3OYcD9Ge89SC942Y8dxDJrYwmfdjaqA&usqp=CAU'
+  animation:string
+  animationState:string
+  xShift:number
+  yShift:number
+  xRangeValue:string='100'
+  yRangeValue:string='100'
+  initialImageHeight:number
 
 
-  getFile(event:any){
+  getFile(event:any, element?:any){
+
+    if(!event.target.files[0]) return
+
+    this.resetImgPosition(element)
+
     let fileType = event.target.files[0].type
     if(fileType.match(/image\/*/)){
       let reader = new FileReader()
@@ -28,15 +35,29 @@ export class FormComponent implements OnInit {
       reader.onload = (event:any) =>{
         this.url = event.target.result
         event.target.value =""
-
       }
     }else{
       alert("please, select correct type of file")
     }
+    setTimeout(()=>{
+      this.initialImageHeight = element.children[0].height
+    },10)
   }
 
-  resetImg(){
+  resetImgPosition(element:any){
+    let position = element.children[0].style
+    this.xShift = this.yShift = 0
+    this.xRangeValue = this.yRangeValue = '100'
+    position.bottom = `0px`
+    position.left = `0px`
+  }
+
+  resetImg(element:any){
     this.url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0mx3OYcD9Ge89SC942Y8dxDJrYwmfdjaqA&usqp=CAU'
+    this.resetImgPosition(element)
+    setTimeout(()=>{
+      this.initialImageHeight = element.children[0].height
+    },10)
   }
 
   animationType(value:string){
@@ -45,23 +66,26 @@ export class FormComponent implements OnInit {
     setTimeout(()=>this.animationState="end", 0)
   }
 
-  shiftX(val: HTMLInputElement, elem: any){
+  shiftX(elem: any){
     const style = elem.children[0].style
-    this.xShift = `${val.value}px`
     style.position = 'relative'
-    style.left= this.xShift
+    style.left= `${this.xShift}px`
   }
 
-  shiftY(val: HTMLInputElement, elem: any){
+  shiftY(elem: any){
     const style = elem.children[0].style
-    this.yShift = `${val.value}px`
-    style.position = "relative"
-    style.bottom = this.yShift
-
+    style.position = 'relative'
+    style.bottom = `${this.yShift}px`
   }
 
-
-  ngOnInit(): void {
+  onXRangeChange(element:any){
+    this.xRangeValue = element.value
   }
+
+  onYRangeChange(element:any){
+    this.yRangeValue = element.value
+  }
+
+  ngOnInit(): void {}
 
 }
